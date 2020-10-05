@@ -30,6 +30,8 @@ stages:
     steps: 
     - bash: echo deploy dev
     - bash: echo env=$(var1)
+    - bash: echo default working directory = $(System.DefaultWorkingDirectory)
+    - bash: ls -R $(System.DefaultWorkingDirectory)
   
 - stage: QADeploy
   dependsOn: Build
