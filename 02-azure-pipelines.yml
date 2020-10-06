@@ -12,9 +12,13 @@ pool:
 stages:
 - stage: Build
   jobs:
-  - job: FirstJob
+  - job: Job_Version
     steps: 
-    - bash: echo Build Job 
+    - bash: Versions of tools
+    - bash: java -version
+    - bash: node --version
+    - bash: python --version
+    - bash: mvn -version
     - script: echo "pipeline variable = $(pipelineLevelVariable)"
       displayName: 'Run a line script'
   - job: SecondJob
@@ -26,7 +30,7 @@ stages:
     var1: envDev
   dependsOn: Build
   jobs:
-  - job: DevDeployJob
+  - job: Job_WorkingDirectory
     steps: 
     - bash: echo deploy dev
     - bash: echo env=$(var1)
