@@ -29,7 +29,7 @@ stages:
     - bash: ls -R $(System.DefaultWorkingDirectory)  
     - bash: echo artifact staging directory = $(Build.ArtifactStagingDirectory)
     - bash: ls -R $(Build.ArtifactStagingDirectory)  
-  - job: Job_Copy_Files
+  - job: Artifact
     steps: 
     - bash: echo copy data to artifact
     - task: CopyFiles@2
@@ -38,10 +38,15 @@ stages:
         Contents: |
           **/*.tf
           **/*.yaml
-          **
+          **/*.yml
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    - bash: echo artifact staging directory = $(Build.ArtifactStagingDirectory)
+    - bash: echo check data into artifact staging directory = $(Build.ArtifactStagingDirectory)
     - bash: ls -R $(Build.ArtifactStagingDirectory)  
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 
 - stage: DevDeploy
   variables:
