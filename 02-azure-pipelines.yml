@@ -14,7 +14,7 @@ stages:
   jobs:
   - job: Job_Version
     steps: 
-    - bash: Versions of tools
+    - bash: echo Versions of tools
     - bash: java -version
     - bash: node --version
     - bash: python --version
