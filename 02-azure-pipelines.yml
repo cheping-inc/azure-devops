@@ -21,21 +21,34 @@ stages:
     - bash: mvn -version
     - script: echo "pipeline variable = $(pipelineLevelVariable)"
       displayName: 'Run a line script'
-  - job: SecondJob
-    steps: 
-    - bash: echo Build second Job bash only
-
-- stage: DevDeploy
-  variables:
-    var1: envDev
-  dependsOn: Build
-  jobs:
   - job: Job_WorkingDirectory
     steps: 
     - bash: echo deploy dev
     - bash: echo env=$(var1)
     - bash: echo default working directory = $(System.DefaultWorkingDirectory)
-    - bash: ls -R $(System.DefaultWorkingDirectory)
+    - bash: ls -R $(System.DefaultWorkingDirectory)  
+    - bash: echo artifact staging directory = $(Build.ArtifactStagingDirectory)
+    - bash: ls -R $(Build.ArtifactStagingDirectory)  
+  - job: Job_Copy_Files
+    steps: 
+    - bash: echo copy data to artifact
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: |
+          **/*.tf
+          **/*.yaml
+          **
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- stage: DevDeploy
+  variables:
+    var1: envDev
+  dependsOn: Build
+  jobs:  
+  - job: SecondJob
+    steps: 
+    - bash: echo Build second Job bash only
   
 - stage: QADeploy
   dependsOn: Build
