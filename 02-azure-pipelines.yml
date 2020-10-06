@@ -40,6 +40,8 @@ stages:
           **/*.yaml
           **
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - bash: echo artifact staging directory = $(Build.ArtifactStagingDirectory)
+    - bash: ls -R $(Build.ArtifactStagingDirectory)  
 
 - stage: DevDeploy
   variables:
